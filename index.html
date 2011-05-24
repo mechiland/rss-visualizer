@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>RSS Visualizer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jsapi.js"></script>
+  </head>
+  <body>
+    
+    <div id="container">
+      <header></header>
+      <div id="main" role="main">
+        
+        <article>
+          <h2>正在加载⋯⋯</h2>
+          <div class="content"></div>
+        </article>
+        
+        <div id="feed">
+          
+        </div>
+      </div>
+      <footer>
+        
+      </footer>
+    </div>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript">
+      google.load("feeds", 1);
+      var entries = [];
+      var lastIndex = 0;
+      $(function(){
+        var feed = new google.feeds.Feed("http://cn.engadget.com/rss.xml");
+        feed.setNumEntries(250);
+        feed.includeHistoricalEntries();
+        feed.load(function(result) {
+          if (!result.error) {
+            entries = result.feed.entries;
+            /* var container = $("#feed");
+            for (var i = 0; i < result.feed.entries.length; i++) {
+              var entry = result.feed.entries[i];
+              $(container).append("<div>"+entry.title+"</div>");
+              $(container).append("<div>"+entry.content.substring(0, 100)+"...</div>");
+              
+            }*/
+          }
+        });
+      })
+      setInterval(function() {
+        if (entries.length > 0) {
+          if (lastIndex >= entries.length) {
+            lastIndex = 0;
+          }
+          var e = entries[lastIndex++];
+          $("article").children("h2").text(e.title);
+          $(".content").html(e.content);
+        }
+      }, 1000*5)
+    </script>
+  </body>
+</html>

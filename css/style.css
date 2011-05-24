@@ -1,0 +1,17 @@
+body {
+  /*background-image: url(../images/bg01.jpg);*/
+  background-color: #0576dc;
+  text-shadow: 0px 1px 1px #111;
+  color: #fff;
+  font-family: "Lucida Grande";
+}
+
+#container {
+  margin: 0 auto;
+  width: 70%;
+  margin-top: 10%;
+}
+
+article {
+  font-size: 40px;
+}
