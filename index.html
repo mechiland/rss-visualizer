@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>RSS Visualizer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jsapi.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="main" role="main">
+        
+        <article id="a1">
+          <span class="from"></span>
+          <h2></h2>
+          <div class="content"></div>
+        </article>
+        
+        <article id="a2" class="hide">
+          <span class="from"></span>
+          <h2></h2>
+          <div class="content"></div>
+        </article>
+        
+        <div id="feed">
+          
+        </div>
+      </div>
+      <footer>
+        
+      </footer>
+    </div>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript">
+      google.load("feeds", 1);
+      var entries = [];
+      var lastIndex = 0;
+      var lastShow = "#a0";
+      
+      function loadFeeds() {
+        loadFeed("http://cn.engadget.com/rss.xml");
+        loadFeed("http://news.ycombinator.com/rss");
+      }
+      
+      function loadFeed(url) {
+        var feed = new google.feeds.Feed(url);
+        feed.setNumEntries(50);
+        feed.includeHistoricalEntries();
+        feed.load(function(result) {
+          if (!result.error) {
+            es = result.feed.entries;
+            for (var i = 0; i < es.length; i++) {
+              entries.push(es[i]);
+            }
+          }
+        });
+      }
+      
+      $(function(){
+        loadFeeds();
+      })
+      
+      setInterval(function() {
+        if (entries.length > 0) {
+          if (lastIndex >= entries.length) {
+            lastIndex = 0;
+          }
+          var e = entries[lastIndex++];
+          $(lastShow).addClass("hide");
+          var thisShow = (lastShow == "#a1" ? "#a2" : "#a1");
+          $(thisShow).children("h2").text(e.title);
+          $(thisShow).children(".content").html(e.content.substring(0, 250) + "...");
+          $(thisShow).removeClass("hide");
+          lastShow = thisShow;
+        }
+      }, 1000*5)
+    </script>
+  </body>
+</html>
