@@ -9,13 +9,18 @@
     <script src="js/jsapi.js"></script>
   </head>
   <body>
-    <div id="container">
+    <div id="container" class="title_only">
+      
+      <div id="loading">
+        RSS Visualizer Loading...
+      </div>
+      
       <div id="main" role="main">
         
         <article id="a1">
-          <span class="from">SS</span>
-          <h2>YYY</h2>
-          <div class="content">ZZZ</div>
+          <span class="from"></span>
+          <h2></h2>
+          <div class="content"></div>
         </article>
         
         <article id="a2" class="hide">
@@ -31,7 +36,19 @@
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript">
       google.load("feeds", 1);
-      $(function() {new RSSVisualizer().start(); })
+      var urls = [
+          "http://www.guao.hk/feed", 
+          "http://cn.engadget.com/rss.xml", 
+          "http://news.ycombinator.com/rss",
+          "http://blogs.thoughtworks.com/rss20.xml"
+      ];
+      $(function() {
+        var visualizer = new RSSVisualizer(urls);
+        visualizer.start(urls); 
+        setInterval(function() {
+          visualizer.restart();
+        }, 30 * 60 * 1000);
+      })
     </script>
   </body>
 </html>

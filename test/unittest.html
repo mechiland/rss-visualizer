@@ -49,6 +49,10 @@ test("should fetch feeds", function() {
   });
 });
 
+test("should randomize", function() {
+  var r = this.F.randomize([1, 2, 3, 4, 5, 6]);
+  ok( r != [1, 2, 3, 4, 5, 6]);
+})
 
   });
   </script>
