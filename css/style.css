@@ -23,8 +23,8 @@ article {
   font-size: 36px;
   width: 100%;
   position: absolute;
-  -webkit-box-reflect: below 1px 
-  -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.6, transparent), to(white));
+  /*-webkit-box-reflect: below 1px 
+    -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.6, transparent), to(white));*/
 }
 
 article img {

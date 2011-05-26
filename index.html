@@ -23,11 +23,7 @@
           <h2></h2>
           <div class="content"></div>
         </article>
-        
-        <div id="feed">
-          
         </div>
-      </div>
       <footer>
         
       </footer>
@@ -35,47 +31,7 @@
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript">
       google.load("feeds", 1);
-      var entries = [];
-      var lastIndex = 0;
-      var lastShow = "#a0";
-      
-      function loadFeeds() {
-        loadFeed("http://cn.engadget.com/rss.xml");
-        loadFeed("http://news.ycombinator.com/rss");
-      }
-      
-      function loadFeed(url) {
-        var feed = new google.feeds.Feed(url);
-        feed.setNumEntries(50);
-        feed.includeHistoricalEntries();
-        feed.load(function(result) {
-          if (!result.error) {
-            es = result.feed.entries;
-            for (var i = 0; i < es.length; i++) {
-              entries.push(es[i]);
-            }
-          }
-        });
-      }
-      
-      $(function(){
-        loadFeeds();
-      })
-      
-      setInterval(function() {
-        if (entries.length > 0) {
-          if (lastIndex >= entries.length) {
-            lastIndex = 0;
-          }
-          var e = entries[lastIndex++];
-          $(lastShow).addClass("hide");
-          var thisShow = (lastShow == "#a1" ? "#a2" : "#a1");
-          $(thisShow).children("h2").text(e.title);
-          $(thisShow).children(".content").html(e.content.substring(0, 250) + "...");
-          $(thisShow).removeClass("hide");
-          lastShow = thisShow;
-        }
-      }, 1000*5)
+      $(function() {new RSSVisualizer().start(); })
     </script>
   </body>
 </html>

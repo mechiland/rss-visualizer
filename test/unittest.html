@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+                    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <script src="../js/jquery.min.js"></script>
+  <link rel="stylesheet" href="qunit.css" type="text/css" media="screen" />
+<script type="text/javascript" src="qunit.js"></script>
+<script src="../js/jsapi.js"></script>
+<script type="text/javascript" src="../js/main.js"></script>
+
+<script>
+google.load("feeds", 1);
+$(document).ready(function(){
+
+module("Feeds", {setup: function() {
+  this.F = new Feeds();
+}})
+
+test("should be able to add feed", function() {
+  equals(0, this.F.entries().length);
+  ok(this.F.empty(), "Should be empty initially");
+  this.F.add({title: "A", entries: [{}]})
+  equals(1, this.F.feeds.length)
+});
+
+test("should be able to combine feed entries", function() {
+  this.F.add({title: "A", entries: [{}]});
+  this.F.add({title: "B", entries: [{}, {}]});
+  equals(3, this.F.entries().length)
+});
+
+test("should fetch feed", function() {
+  expect(1);
+  stop();
+  var _this = this;
+  this.F.fetch("http://news.ycombinator.com/rss", function() {
+    ok(_this.F.entries().length > 0, "Should fetch RSS");
+    start();
+  });
+});
+
+test("should fetch feeds", function() {
+  expect(1);
+  stop();
+  var _this = this;
+  this.F.fetchAll(["http://news.ycombinator.com/rss","http://news.ycombinator.com/rss"], function() {
+    ok(_this.F.entries().length > 0, "Should fetch RSS");
+    start();
+  });
+});
+
+  });
+  </script>
+  
+</head>
+<body>
+  <h1 id="qunit-header">QUnit example</h1>
+ <h2 id="qunit-banner"></h2>
+ <div id="qunit-testrunner-toolbar"></div>
+ <h2 id="qunit-userAgent"></h2>
+ <ol id="qunit-tests"></ol>
+ <div id="qunit-fixture">test markup, will be hidden</div>
+</body>
+</html>
