@@ -28,7 +28,7 @@ function Feeds() {
   this.fetch = function(feedUrl, callback) {
     var _this = this;
     var feed = new google.feeds.Feed(feedUrl);
-    feed.setNumEntries(50);
+    feed.setNumEntries(1);
     feed.includeHistoricalEntries();
     feed.load(function(result) {
       if (!result.error) {
@@ -73,6 +73,7 @@ function RSSVisualizer() {
   
   this.playRSS = function() {
     if (this.entries.length == 0) return;
+    if (this._lastIndex == this.entries.length) this._lastIndex = 0;
     var e = this.entries[this._lastIndex++];
     $(this.lastShow).addClass("hide");
     var thisShow = (this.lastShow == "#a1" ? "#a2" : "#a1");
@@ -83,15 +84,21 @@ function RSSVisualizer() {
   this.showSingle = function(container, entry) {
     $(container).children(".from").text(entry.feed_title);
     $(container).children("h2").text(entry.title);
-    $(container).children(".content").html(entry);
+    $(container).children(".content").html(this.renderContent(entry));
     $(container).removeClass("hide");
   };
   
   this.renderContent = function(entry) {
     if (entry.feed_title == "Hacker News") {
       return "";
+    } 
+    var regexp_img = /<img [^>]+>/ig;
+    var matched = entry.content.match(regexp_img);
+    var img = "";
+    if (matched) {
+      img = matched[0];
     }
-    return entry.content.substring(0, 250) + "...";
+    return img + entry.content.replace(/<[^>]+>/img, '');
   }
   
   
